@@ -14,7 +14,7 @@ class GameScene extends Scene
 
     public override function begin()
     {
-        add(new Player(30, 50));
+        add(new Player(40, 55));
         add(new Map("maps/sanctum.tmx"));
     }
 }
