@@ -70,6 +70,10 @@ class Player extends Entity
         }
         else
         {
+          if(!isSpinJumping)
+          {
+            velX *= 0.92;
+          }
           velY += GRAVITY;
           velY = Math.min(velY, TERMINAL_VELOCITY);
         }
