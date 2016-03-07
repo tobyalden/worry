@@ -22,6 +22,7 @@ class Player extends Entity
 
     private var onGround:Bool;
     private var isSpinJumping:Bool;
+    private var isLookingUp:Bool;
 
     private var sprite:Spritemap;
     private var walkSfx:Sfx;
@@ -38,11 +39,15 @@ class Player extends Entity
         velY = 0;
         onGround = false;
         isSpinJumping = false;
+        isLookingUp = false;
         sprite = new Spritemap("graphics/player.png", 32, 48);
         sprite.add("idle", [0]);
         sprite.add("walk", [6, 7, 8], 12);
         sprite.add("jump", [9]);
         sprite.add("spinjump", [2, 3, 4, 5], 12);
+        sprite.add("idle_up", [10], 12);
+        sprite.add("walk_up", [11, 12, 13], 12);
+        sprite.add("jump_up", [14]);
         sprite.play("idle");
         graphic = sprite;
         layer = -2550;
@@ -53,8 +58,16 @@ class Player extends Entity
         shootSfx = new Sfx("audio/shoot.wav");
     }
 
+    public override function moveCollideY(e:Entity)
+    {
+      velY = -0.1;
+      return true;
+    }
+
     public override function update()
     {
+        isLookingUp = Input.check(Key.UP) && !isSpinJumping;
+
         if(onGround != isOnGround())
         {
           onGround = isOnGround();
@@ -84,7 +97,7 @@ class Player extends Entity
           {
             velY = -JUMP_POWER;
             jumpSfx.play();
-            if(Input.check(Key.RIGHT) || Input.check(Key.LEFT))
+            if((Input.check(Key.RIGHT) || Input.check(Key.LEFT)) && !Input.check(Key.UP))
             {
               isSpinJumping = true;
             }
@@ -106,14 +119,29 @@ class Player extends Entity
         if(Input.pressed(Key.X))
         {
           shootSfx.play();
-          if(sprite.flipped)
+          if(isLookingUp)
           {
-            scene.add(new Bullet(x + 7, y + 25, -BULLET_SPEED));
+            if(sprite.flipped)
+            {
+              scene.add(new Bullet(x + 15, y + 11, 0, -BULLET_SPEED));
+            }
+            else
+            {
+              scene.add(new Bullet(x + 14, y + 11, 0, -BULLET_SPEED));
+            }
           }
           else
           {
-            scene.add(new Bullet(x + 26, y + 25, BULLET_SPEED));
+            if(sprite.flipped)
+            {
+              scene.add(new Bullet(x + 7, y + 25, -BULLET_SPEED, 0));
+            }
+            else
+            {
+              scene.add(new Bullet(x + 26, y + 25, BULLET_SPEED, 0));
+            }
           }
+
         }
 
         super.update();
@@ -139,7 +167,14 @@ class Player extends Entity
         }
         else
         {
-          sprite.play('jump');
+          if(isLookingUp)
+          {
+            sprite.play('jump_up');
+          }
+          else
+          {
+            sprite.play('jump');
+          }
         }
       }
       else if(onGround)
@@ -147,7 +182,14 @@ class Player extends Entity
         spinJumpSfx.stop();
         if (velX != 0)
         {
-          sprite.play('walk');
+          if(isLookingUp)
+          {
+            sprite.play('walk_up');
+          }
+          else
+          {
+            sprite.play('walk');
+          }
           if(!walkSfx.playing)
           {
             walkSfx.loop();
@@ -155,7 +197,14 @@ class Player extends Entity
         }
         else
         {
-          sprite.play('idle');
+          if(isLookingUp)
+          {
+            sprite.play('idle_up');
+          }
+          else
+          {
+            sprite.play('idle');
+          }
           walkSfx.stop();
         }
       }

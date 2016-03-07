@@ -6,14 +6,16 @@ import com.haxepunk.Sfx;
 
 class Bullet extends Entity
 {
-    private var speed:Float;
+    private var velX:Float;
+    private var velY:Float;
 
     private var hitSfx:Sfx;
 
-    public function new(x:Float, y:Float, speed:Float)
+    public function new(x:Float, y:Float, velX:Float, velY:Float)
     {
         super(x, y);
-        this.speed = speed;
+        this.velX = velX;
+        this.velY = velY;
         setHitbox(3, 3);
         type = "bullet";
         graphic = Image.createRect(3, 3);
@@ -27,9 +29,16 @@ class Bullet extends Entity
         return true;
     }
 
+    public override function moveCollideY(e:Entity)
+    {
+        scene.remove(this);
+        hitSfx.play();
+        return true;
+    }
+
     public override function update()
     {
         super.update();
-        moveBy(speed, 0, "walls");
+        moveBy(velX, velY, "walls");
     }
 }
