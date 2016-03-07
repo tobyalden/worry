@@ -1,6 +1,7 @@
 package entities;
 
 import com.haxepunk.Entity;
+import com.haxepunk.HXP;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.graphics.Spritemap;
 import com.haxepunk.utils.Input;
@@ -151,6 +152,9 @@ class Player extends Entity
 
         moveBy(velX, velY, "walls");
         animate();
+
+        scene.camera.x = Math.floor(x/HXP.screen.width)*HXP.screen.width;
+        scene.camera.y = Math.floor(y/HXP.screen.height)*HXP.screen.height;
 
         super.update();
     }

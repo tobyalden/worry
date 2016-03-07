@@ -40,6 +40,8 @@ class AssetData {
 			type.set ("font/04B_03__.ttf.png", Reflect.field (AssetType, "image".toUpperCase ()));
 			path.set ("graphics/block.png", "graphics/block.png");
 			type.set ("graphics/block.png", Reflect.field (AssetType, "image".toUpperCase ()));
+			path.set ("graphics/bubble.png", "graphics/bubble.png");
+			type.set ("graphics/bubble.png", Reflect.field (AssetType, "image".toUpperCase ()));
 			path.set ("graphics/old_player.png", "graphics/old_player.png");
 			type.set ("graphics/old_player.png", Reflect.field (AssetType, "image".toUpperCase ()));
 			path.set ("graphics/player.png", "graphics/player.png");

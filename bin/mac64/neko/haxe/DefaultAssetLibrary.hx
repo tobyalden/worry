@@ -80,6 +80,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		
 		
+		
 		#if (windows || mac || linux)
 		
 		var useManifest = false;
@@ -116,6 +117,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		className.set ("font/04B_03__.ttf.png", __ASSET__font_04b_03___ttf_png);
 		type.set ("font/04B_03__.ttf.png", AssetType.IMAGE);
+		useManifest = true;
 		useManifest = true;
 		useManifest = true;
 		useManifest = true;
@@ -637,6 +639,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		
 		
+		
 		#end
 		
 		#if flash
@@ -665,6 +668,8 @@ class DefaultAssetLibrary extends AssetLibrary {
 		type.set ("font/04B_03__.ttf.png", AssetType.IMAGE);
 		path.set ("graphics/block.png", "graphics/block.png");
 		type.set ("graphics/block.png", AssetType.IMAGE);
+		path.set ("graphics/bubble.png", "graphics/bubble.png");
+		type.set ("graphics/bubble.png", AssetType.IMAGE);
 		path.set ("graphics/old_player.png", "graphics/old_player.png");
 		type.set ("graphics/old_player.png", AssetType.IMAGE);
 		path.set ("graphics/player.png", "graphics/player.png");
@@ -735,6 +740,9 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		type.set (id, AssetType.IMAGE);
 		id = "graphics/block.png";
+		path.set (id, id);
+		type.set (id, AssetType.IMAGE);
+		id = "graphics/bubble.png";
 		path.set (id, id);
 		type.set (id, AssetType.IMAGE);
 		id = "graphics/old_player.png";
@@ -817,6 +825,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		className.set ("font/04B_03__.ttf.png", __ASSET__font_04b_03___ttf_png);
 		type.set ("font/04B_03__.ttf.png", AssetType.IMAGE);
+		useManifest = true;
 		useManifest = true;
 		useManifest = true;
 		useManifest = true;
@@ -1570,6 +1579,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 
 
+
 #elseif html5
 
 
@@ -1582,6 +1592,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 
 @:keep #if display private #end class __ASSET__font_04b_03___ttf extends lime.text.Font { public function new () { super (); name = "04b03"; } } 
+
 
 
 
