@@ -1,5 +1,6 @@
 package entities;
 
+import flash.system.System;
 import com.haxepunk.Entity;
 import com.haxepunk.HXP;
 import com.haxepunk.graphics.Image;
@@ -153,8 +154,14 @@ class Player extends Entity
         moveBy(velX, velY, "walls");
         animate();
 
-        scene.camera.x = Math.floor(x/HXP.screen.width)*HXP.screen.width;
-        scene.camera.y = Math.floor(y/HXP.screen.height)*HXP.screen.height;
+        // CAMERA
+        scene.camera.x = Math.floor(centerX/HXP.screen.width)*HXP.screen.width;
+        scene.camera.y = Math.floor(centerY/HXP.screen.height)*HXP.screen.height;
+
+        if(Input.pressed(Key.ESCAPE))
+        {
+          System.exit(0);
+        }
 
         super.update();
     }
