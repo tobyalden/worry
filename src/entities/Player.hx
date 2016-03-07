@@ -5,6 +5,7 @@ import com.haxepunk.graphics.Image;
 import com.haxepunk.graphics.Spritemap;
 import com.haxepunk.utils.Input;
 import com.haxepunk.utils.Key;
+import entities.Bullet;
 
 class Player extends Entity
 {
@@ -12,11 +13,14 @@ class Player extends Entity
     public static inline var TERMINAL_VELOCITY = 6;
     public static inline var RUN_SPEED = 3.5;
     public static inline var JUMP_POWER = 6;
+    public static inline var STANDING_JUMP_SPEED_PERCENTAGE = 0.92;
+    public static inline var BULLET_SPEED = 6;
 
     private var sprite:Spritemap;
     private var velX:Float;
     private var velY:Float;
 
+    private var onGround:Bool;
     private var isSpinJumping:Bool;
 
     public function new(x:Int, y:Int)
@@ -25,6 +29,7 @@ class Player extends Entity
         setHitbox(12, 32, -10, -16);
         velX = 0;
         velY = 0;
+        onGround = false;
         isSpinJumping = false;
         sprite = new Spritemap("graphics/player.png", 32, 48);
         sprite.add("idle", [0]);
@@ -38,7 +43,7 @@ class Player extends Entity
 
     public override function update()
     {
-        var onGround = isOnGround();
+        onGround = isOnGround();
 
         if (Input.check(Key.LEFT))
         {
@@ -72,34 +77,24 @@ class Player extends Entity
         {
           if(!isSpinJumping)
           {
-            velX *= 0.92;
+            velX *= STANDING_JUMP_SPEED_PERCENTAGE;
           }
           velY += GRAVITY;
           velY = Math.min(velY, TERMINAL_VELOCITY);
         }
 
         moveBy(velX, velY, "walls");
+        animate();
 
-        if(!onGround)
+        if(Input.pressed(Key.X))
         {
-          if(isSpinJumping)
+          if(sprite.flipped)
           {
-            sprite.play('spinjump');
+            scene.add(new Bullet(x + 7, y + 25, -BULLET_SPEED));
           }
           else
           {
-            sprite.play('jump');
-          }
-        }
-        else if(onGround)
-        {
-          if (velX != 0)
-          {
-            sprite.play('walk');
-          }
-          else
-          {
-            sprite.play('idle');
+            scene.add(new Bullet(x + 26, y + 25, BULLET_SPEED));
           }
         }
 
@@ -109,6 +104,32 @@ class Player extends Entity
     private function isOnGround()
     {
       return collide("walls", x, y + 1) != null;
+    }
+
+    private function animate()
+    {
+      if(!onGround)
+      {
+        if(isSpinJumping)
+        {
+          sprite.play('spinjump');
+        }
+        else
+        {
+          sprite.play('jump');
+        }
+      }
+      else if(onGround)
+      {
+        if (velX != 0)
+        {
+          sprite.play('walk');
+        }
+        else
+        {
+          sprite.play('idle');
+        }
+      }
     }
 
 }
