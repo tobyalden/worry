@@ -14,6 +14,7 @@ class Player extends Entity
     public static inline var TERMINAL_VELOCITY = 6;
     public static inline var RUN_SPEED = 3.5;
     public static inline var JUMP_POWER = 6;
+    public static inline var JUMP_CANCEL_VELOCITY = 4;
     public static inline var STANDING_JUMP_SPEED_PERCENTAGE = 0.92;
     public static inline var BULLET_SPEED = 6;
 
@@ -74,6 +75,7 @@ class Player extends Entity
           landSfx.play();
         }
 
+        // RUNNING
         if (Input.check(Key.LEFT))
         {
           velX = -RUN_SPEED;
@@ -89,6 +91,7 @@ class Player extends Entity
           velX = 0;
         }
 
+        // JUMPING
         if(onGround)
         {
           velY = 0;
@@ -111,11 +114,13 @@ class Player extends Entity
           }
           velY += GRAVITY;
           velY = Math.min(velY, TERMINAL_VELOCITY);
+          if(!Input.check(Key.Z) && velY < -JUMP_CANCEL_VELOCITY)
+          {
+            velY = -JUMP_CANCEL_VELOCITY;
+          }
         }
 
-        moveBy(velX, velY, "walls");
-        animate();
-
+        // SHOOTING
         if(Input.pressed(Key.X))
         {
           shootSfx.play();
@@ -143,6 +148,9 @@ class Player extends Entity
           }
 
         }
+
+        moveBy(velX, velY, "walls");
+        animate();
 
         super.update();
     }
