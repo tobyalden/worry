@@ -5,6 +5,7 @@ import com.haxepunk.graphics.Image;
 import com.haxepunk.graphics.Spritemap;
 import com.haxepunk.utils.Input;
 import com.haxepunk.utils.Key;
+import com.haxepunk.Sfx;
 import entities.Bullet;
 
 class Player extends Entity
@@ -16,12 +17,18 @@ class Player extends Entity
     public static inline var STANDING_JUMP_SPEED_PERCENTAGE = 0.92;
     public static inline var BULLET_SPEED = 6;
 
-    private var sprite:Spritemap;
     private var velX:Float;
     private var velY:Float;
 
     private var onGround:Bool;
     private var isSpinJumping:Bool;
+
+    private var sprite:Spritemap;
+    private var walkSfx:Sfx;
+    private var jumpSfx:Sfx;
+    private var spinJumpSfx:Sfx;
+    private var landSfx:Sfx;
+    private var shootSfx:Sfx;
 
     public function new(x:Int, y:Int)
     {
@@ -39,11 +46,20 @@ class Player extends Entity
         sprite.play("idle");
         graphic = sprite;
         layer = -2550;
+        walkSfx = new Sfx("audio/walk.wav");
+        jumpSfx = new Sfx("audio/jump.wav");
+        spinJumpSfx = new Sfx("audio/spinjump.wav");
+        landSfx = new Sfx("audio/land.wav");
+        shootSfx = new Sfx("audio/shoot.wav");
     }
 
     public override function update()
     {
-        onGround = isOnGround();
+        if(onGround != isOnGround())
+        {
+          onGround = isOnGround();
+          landSfx.play();
+        }
 
         if (Input.check(Key.LEFT))
         {
@@ -67,6 +83,7 @@ class Player extends Entity
           if(Input.pressed(Key.Z))
           {
             velY = -JUMP_POWER;
+            jumpSfx.play();
             if(Input.check(Key.RIGHT) || Input.check(Key.LEFT))
             {
               isSpinJumping = true;
@@ -88,6 +105,7 @@ class Player extends Entity
 
         if(Input.pressed(Key.X))
         {
+          shootSfx.play();
           if(sprite.flipped)
           {
             scene.add(new Bullet(x + 7, y + 25, -BULLET_SPEED));
@@ -110,9 +128,14 @@ class Player extends Entity
     {
       if(!onGround)
       {
+        walkSfx.stop();
         if(isSpinJumping)
         {
           sprite.play('spinjump');
+          if(!spinJumpSfx.playing)
+          {
+            spinJumpSfx.loop();
+          }
         }
         else
         {
@@ -121,13 +144,19 @@ class Player extends Entity
       }
       else if(onGround)
       {
+        spinJumpSfx.stop();
         if (velX != 0)
         {
           sprite.play('walk');
+          if(!walkSfx.playing)
+          {
+            walkSfx.loop();
+          }
         }
         else
         {
           sprite.play('idle');
+          walkSfx.stop();
         }
       }
     }

@@ -46,6 +46,18 @@ class AssetData {
 			type.set ("graphics/player.png", Reflect.field (AssetType, "image".toUpperCase ()));
 			path.set ("graphics/tiles.png", "graphics/tiles.png");
 			type.set ("graphics/tiles.png", Reflect.field (AssetType, "image".toUpperCase ()));
+			path.set ("audio/hit.wav", "audio/hit.wav");
+			type.set ("audio/hit.wav", Reflect.field (AssetType, "sound".toUpperCase ()));
+			path.set ("audio/jump.wav", "audio/jump.wav");
+			type.set ("audio/jump.wav", Reflect.field (AssetType, "sound".toUpperCase ()));
+			path.set ("audio/land.wav", "audio/land.wav");
+			type.set ("audio/land.wav", Reflect.field (AssetType, "sound".toUpperCase ()));
+			path.set ("audio/shoot.wav", "audio/shoot.wav");
+			type.set ("audio/shoot.wav", Reflect.field (AssetType, "sound".toUpperCase ()));
+			path.set ("audio/spinjump.wav", "audio/spinjump.wav");
+			type.set ("audio/spinjump.wav", Reflect.field (AssetType, "sound".toUpperCase ()));
+			path.set ("audio/walk.wav", "audio/walk.wav");
+			type.set ("audio/walk.wav", Reflect.field (AssetType, "sound".toUpperCase ()));
 			path.set ("maps/sanctum.tmx", "maps/sanctum.tmx");
 			type.set ("maps/sanctum.tmx", Reflect.field (AssetType, "text".toUpperCase ()));
 			

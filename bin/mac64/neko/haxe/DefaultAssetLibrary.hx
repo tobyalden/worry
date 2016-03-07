@@ -74,6 +74,12 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		
 		
+		
+		
+		
+		
+		
+		
 		#if (windows || mac || linux)
 		
 		var useManifest = false;
@@ -110,6 +116,12 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		className.set ("font/04B_03__.ttf.png", __ASSET__font_04b_03___ttf_png);
 		type.set ("font/04B_03__.ttf.png", AssetType.IMAGE);
+		useManifest = true;
+		useManifest = true;
+		useManifest = true;
+		useManifest = true;
+		useManifest = true;
+		useManifest = true;
 		useManifest = true;
 		useManifest = true;
 		useManifest = true;
@@ -619,6 +631,12 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		
 		
+		
+		
+		
+		
+		
+		
 		#end
 		
 		#if flash
@@ -653,6 +671,18 @@ class DefaultAssetLibrary extends AssetLibrary {
 		type.set ("graphics/player.png", AssetType.IMAGE);
 		path.set ("graphics/tiles.png", "graphics/tiles.png");
 		type.set ("graphics/tiles.png", AssetType.IMAGE);
+		path.set ("audio/hit.wav", "audio/hit.wav");
+		type.set ("audio/hit.wav", AssetType.SOUND);
+		path.set ("audio/jump.wav", "audio/jump.wav");
+		type.set ("audio/jump.wav", AssetType.SOUND);
+		path.set ("audio/land.wav", "audio/land.wav");
+		type.set ("audio/land.wav", AssetType.SOUND);
+		path.set ("audio/shoot.wav", "audio/shoot.wav");
+		type.set ("audio/shoot.wav", AssetType.SOUND);
+		path.set ("audio/spinjump.wav", "audio/spinjump.wav");
+		type.set ("audio/spinjump.wav", AssetType.SOUND);
+		path.set ("audio/walk.wav", "audio/walk.wav");
+		type.set ("audio/walk.wav", AssetType.SOUND);
 		path.set ("maps/sanctum.tmx", "maps/sanctum.tmx");
 		type.set ("maps/sanctum.tmx", AssetType.TEXT);
 		
@@ -716,6 +746,24 @@ class DefaultAssetLibrary extends AssetLibrary {
 		id = "graphics/tiles.png";
 		path.set (id, id);
 		type.set (id, AssetType.IMAGE);
+		id = "audio/hit.wav";
+		path.set (id, id);
+		type.set (id, AssetType.SOUND);
+		id = "audio/jump.wav";
+		path.set (id, id);
+		type.set (id, AssetType.SOUND);
+		id = "audio/land.wav";
+		path.set (id, id);
+		type.set (id, AssetType.SOUND);
+		id = "audio/shoot.wav";
+		path.set (id, id);
+		type.set (id, AssetType.SOUND);
+		id = "audio/spinjump.wav";
+		path.set (id, id);
+		type.set (id, AssetType.SOUND);
+		id = "audio/walk.wav";
+		path.set (id, id);
+		type.set (id, AssetType.SOUND);
 		id = "maps/sanctum.tmx";
 		path.set (id, id);
 		type.set (id, AssetType.TEXT);
@@ -769,6 +817,12 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		className.set ("font/04B_03__.ttf.png", __ASSET__font_04b_03___ttf_png);
 		type.set ("font/04B_03__.ttf.png", AssetType.IMAGE);
+		useManifest = true;
+		useManifest = true;
+		useManifest = true;
+		useManifest = true;
+		useManifest = true;
+		useManifest = true;
 		useManifest = true;
 		useManifest = true;
 		useManifest = true;
@@ -1510,6 +1564,12 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 
 
+
+
+
+
+
+
 #elseif html5
 
 
@@ -1522,6 +1582,12 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 
 @:keep #if display private #end class __ASSET__font_04b_03___ttf extends lime.text.Font { public function new () { super (); name = "04b03"; } } 
+
+
+
+
+
+
 
 
 
