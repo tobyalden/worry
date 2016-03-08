@@ -7,24 +7,18 @@ import entities.Level;
 class GameScene extends Scene
 {
 
-    private var world:Map<Array<Int>, String>;
-    private var worldX:Int;
-    private var worldY:Int;
+    public var currentLevel:String;
 
     public function new()
     {
         super();
-        world = new Map<Array<Int>, String>();
-        world.set([0, 0], "maps/sanctum.tmx");
-
-        worldX = 0;
-        worldY = 0;
+        currentLevel = "maps/sanctum.tmx";
     }
 
     public override function begin()
     {
-        add(new Player(40, 55));
-        add(new Level("maps/sanctum.tmx"));
+        add(new Player());
+        add(new Level(currentLevel));
     }
 
     public override function update()

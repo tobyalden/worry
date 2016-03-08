@@ -6,9 +6,11 @@ import com.haxepunk.HXP;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.graphics.Spritemap;
 import com.haxepunk.utils.Input;
+import com.haxepunk.utils.Data;
 import com.haxepunk.utils.Key;
 import com.haxepunk.Sfx;
 import entities.Bullet;
+import scenes.GameScene;
 
 class Player extends Entity
 {
@@ -19,6 +21,8 @@ class Player extends Entity
     public static inline var JUMP_CANCEL_VELOCITY = 4;
     public static inline var STANDING_JUMP_SPEED_PERCENTAGE = 0.92;
     public static inline var BULLET_SPEED = 6;
+
+    public static inline var DEBUG = true;
 
     private var velX:Float;
     private var velY:Float;
@@ -34,9 +38,12 @@ class Player extends Entity
     private var landSfx:Sfx;
     private var shootSfx:Sfx;
 
-    public function new(x:Int, y:Int)
+    public function new()
     {
         super(x, y);
+        Data.load('worrysave');
+        x = Data.read('saveX', 2874);
+        y = Data.read('saveY', 2160);
         setHitbox(12, 32, -10, -16);
         velX = 0;
         velY = 0;
@@ -51,6 +58,7 @@ class Player extends Entity
         sprite.add("idle_up", [10], 12);
         sprite.add("walk_up", [11, 12, 13], 12);
         sprite.add("jump_up", [14]);
+        sprite.flipped = Data.read('saveFacing', false);
         sprite.play("idle");
         graphic = sprite;
         layer = -2550;
@@ -158,12 +166,47 @@ class Player extends Entity
         scene.camera.x = Math.floor(centerX/HXP.screen.width)*HXP.screen.width;
         scene.camera.y = Math.floor(centerY/HXP.screen.height)*HXP.screen.height;
 
+        // SAVING
         if(Input.pressed(Key.ESCAPE))
         {
+          Data.write("saveX", x);
+          Data.write("saveY", y);
+          Data.write("saveFacing", sprite.flipped);
+          Data.save('worrysave');
           System.exit(0);
         }
 
+        // DEBUG
+        if(DEBUG)
+        {
+          if(Input.pressed(Key.W))
+          {
+            moveBy(0, -HXP.screen.height);
+          }
+          if(Input.pressed(Key.A))
+          {
+            moveBy(-HXP.screen.height, 0);
+          }
+          if(Input.pressed(Key.S))
+          {
+            moveBy(0, HXP.screen.height);
+          }
+          if(Input.pressed(Key.D))
+          {
+            moveBy(HXP.screen.height, 0);
+          }
+          unstuck();
+        }
+
         super.update();
+    }
+
+    private function unstuck()
+    {
+      while(collide('walls', x, y) != null)
+      {
+        moveBy(0, -32);
+      }
     }
 
     private function isOnGround()
