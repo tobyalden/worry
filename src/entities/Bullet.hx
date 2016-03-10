@@ -6,6 +6,9 @@ import com.haxepunk.Sfx;
 
 class Bullet extends Entity
 {
+
+    public static inline var BULLET_POWER = 1;
+
     private var velX:Float;
     private var velY:Float;
 

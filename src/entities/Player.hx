@@ -12,7 +12,7 @@ import com.haxepunk.Sfx;
 import entities.Bullet;
 import scenes.GameScene;
 
-class Player extends Entity
+class Player extends ActiveEntity
 {
     public static inline var GRAVITY = 0.25;
     public static inline var TERMINAL_VELOCITY = 6;
@@ -22,16 +22,15 @@ class Player extends Entity
     public static inline var STANDING_JUMP_SPEED_PERCENTAGE = 0.92;
     public static inline var BULLET_SPEED = 6;
 
-    public static inline var DEBUG = true;
+    public static inline var GAME_START_X = 2874;
+    public static inline var GAME_START_Y = 2160;
 
-    private var velX:Float;
-    private var velY:Float;
+    public static inline var DEBUG = true;
 
     private var onGround:Bool;
     private var isSpinJumping:Bool;
     private var isLookingUp:Bool;
 
-    private var sprite:Spritemap;
     private var walkSfx:Sfx;
     private var jumpSfx:Sfx;
     private var spinJumpSfx:Sfx;
@@ -40,17 +39,17 @@ class Player extends Entity
 
     public function new()
     {
-        super(x, y);
         Data.load('worrysave');
-        x = Data.read('saveX', 2874);
-        y = Data.read('saveY', 2160);
-        setHitbox(12, 32, -10, -16);
+        x = Data.read('saveX', GAME_START_X);
+        y = Data.read('saveY', GAME_START_Y);
+        super(x, y);
+        setHitbox(12, GameScene.TILE_WIDTH, -10, -16);
         velX = 0;
         velY = 0;
         onGround = false;
         isSpinJumping = false;
         isLookingUp = false;
-        sprite = new Spritemap("graphics/player.png", 32, 48);
+        sprite = new Spritemap("graphics/player.png", GameScene.TILE_WIDTH, 48);
         sprite.add("idle", [0]);
         sprite.add("walk", [6, 7, 8], 12);
         sprite.add("jump", [9]);
@@ -67,6 +66,7 @@ class Player extends Entity
         spinJumpSfx = new Sfx("audio/spinjump.wav");
         landSfx = new Sfx("audio/land.wav");
         shootSfx = new Sfx("audio/shoot.wav");
+        name = "player";
     }
 
     public override function moveCollideY(e:Entity)
@@ -195,23 +195,19 @@ class Player extends Entity
           {
             moveBy(HXP.screen.height, 0);
           }
+          if(Input.pressed(Key.R))
+          {
+            x = GAME_START_X;
+            y = GAME_START_Y;
+          }
+          if(Input.pressed(Key.P))
+          {
+            trace(x + ' ' + y);
+          }
           unstuck();
         }
 
         super.update();
-    }
-
-    private function unstuck()
-    {
-      while(collide('walls', x, y) != null)
-      {
-        moveBy(0, -32);
-      }
-    }
-
-    private function isOnGround()
-    {
-      return collide("walls", x, y + 1) != null;
     }
 
     private function animate()
