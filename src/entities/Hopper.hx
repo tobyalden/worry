@@ -14,6 +14,8 @@ class Hopper extends ActiveEntity
     public static inline var JUMP_VEL_Y = 6;
     public static inline var JUMP_COOLDOWN = 60;
 
+    // health should be 25 hits
+
     private var cooldownTimer:Int;
 
     public function new(x:Float, y:Float)

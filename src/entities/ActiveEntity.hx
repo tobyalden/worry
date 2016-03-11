@@ -9,7 +9,7 @@ class ActiveEntity extends Entity
   private var velX:Float;
   private var velY:Float;
 
-  private var health:Int;
+  public var health:Int;
 
   private var sprite:Spritemap;
 

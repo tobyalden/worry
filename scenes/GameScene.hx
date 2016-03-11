@@ -1,9 +1,7 @@
 package scenes;
 
 import com.haxepunk.Scene;
-import entities.Player;
-import entities.Bullet;
-import entities.Level;
+import entities.*;
 
 class GameScene extends Scene
 {
@@ -28,6 +26,7 @@ class GameScene extends Scene
           add(entity);
           trace('Added ' + entity + " at " + entity.x + " " + entity.y);
         }
+        add(new HUD());
     }
 
     public override function update()

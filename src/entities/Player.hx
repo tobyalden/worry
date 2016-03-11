@@ -25,6 +25,10 @@ class Player extends ActiveEntity
     public static inline var GAME_START_X = 2874;
     public static inline var GAME_START_Y = 2160;
 
+    public static inline var HIT_VEL_X = 4;
+    public static inline var HIT_VEL_Y = 3;
+    public static inline var INVINCIBLITY_DURATION = 50;
+
     public static inline var DEBUG = true;
 
     private var onGround:Bool;
@@ -37,6 +41,9 @@ class Player extends ActiveEntity
     private var landSfx:Sfx;
     private var shootSfx:Sfx;
 
+    private var invincibleTimer:Int;
+    private var stunned:Bool;
+
     public function new()
     {
         Data.load('worrysave');
@@ -46,14 +53,18 @@ class Player extends ActiveEntity
         setHitbox(12, GameScene.TILE_WIDTH, -10, -16);
         velX = 0;
         velY = 0;
+        health = 100;
         onGround = false;
         isSpinJumping = false;
         isLookingUp = false;
+        invincibleTimer = 0;
+        stunned = false;
         sprite = new Spritemap("graphics/player.png", GameScene.TILE_WIDTH, 48);
         sprite.add("idle", [0]);
         sprite.add("walk", [6, 7, 8], 12);
         sprite.add("jump", [9]);
         sprite.add("spinjump", [2, 3, 4, 5], 12);
+        sprite.add("hit", [2]);
         sprite.add("idle_up", [10], 12);
         sprite.add("walk_up", [11, 12, 13], 12);
         sprite.add("jump_up", [14]);
@@ -77,7 +88,6 @@ class Player extends ActiveEntity
 
     public override function update()
     {
-        isLookingUp = Input.check(Key.UP) && !isSpinJumping;
 
         if(onGround != isOnGround())
         {
@@ -85,81 +95,30 @@ class Player extends ActiveEntity
           landSfx.play();
         }
 
-        // RUNNING
-        if (Input.check(Key.LEFT))
-        {
-          velX = -RUN_SPEED;
-          sprite.flipped = true;
-        }
-        else if (Input.check(Key.RIGHT))
-        {
-          velX = RUN_SPEED;
-          sprite.flipped = false;
-        }
-        else if(!isSpinJumping)
-        {
-          velX = 0;
-        }
+        var enemy = collide('enemy', x, y);
 
-        // JUMPING
-        if(onGround)
+        if(invincibleTimer > 0)
         {
-          velY = 0;
-          isSpinJumping = false;
-          if(Input.pressed(Key.Z))
-          {
-            velY = -JUMP_POWER;
-            jumpSfx.play();
-            if((Input.check(Key.RIGHT) || Input.check(Key.LEFT)) && !Input.check(Key.UP))
-            {
-              isSpinJumping = true;
-            }
-          }
+          invincibleTimer -= 1;
+          graphic.visible = invincibleTimer % 2 == 0;
+        }
+        if(!stunned || (invincibleTimer < INVINCIBLITY_DURATION/2 && onGround))
+        {
+          stunned = false;
+          movement();
         }
         else
         {
-          if(!isSpinJumping)
-          {
-            velX *= STANDING_JUMP_SPEED_PERCENTAGE;
-          }
-          velY += GRAVITY;
-          velY = Math.min(velY, TERMINAL_VELOCITY);
-          if(!Input.check(Key.Z) && velY < -JUMP_CANCEL_VELOCITY)
-          {
-            velY = -JUMP_CANCEL_VELOCITY;
-          }
-        }
-
-        // SHOOTING
-        if(Input.pressed(Key.X))
-        {
-          shootSfx.play();
-          if(isLookingUp)
-          {
-            if(sprite.flipped)
-            {
-              scene.add(new Bullet(x + 15, y + 11, 0, -BULLET_SPEED));
-            }
-            else
-            {
-              scene.add(new Bullet(x + 14, y + 11, 0, -BULLET_SPEED));
-            }
-          }
-          else
-          {
-            if(sprite.flipped)
-            {
-              scene.add(new Bullet(x + 7, y + 25, -BULLET_SPEED, 0));
-            }
-            else
-            {
-              scene.add(new Bullet(x + 26, y + 25, BULLET_SPEED, 0));
-            }
-          }
-
+            velY += GRAVITY;
         }
 
         moveBy(velX, velY, "walls");
+
+        if(enemy != null)
+        {
+          hit(10, enemy, 1);
+        }
+
         animate();
 
         // CAMERA
@@ -210,9 +169,111 @@ class Player extends ActiveEntity
         super.update();
     }
 
+    private function movement()
+    {
+      isLookingUp = Input.check(Key.UP) && !isSpinJumping;
+
+      // RUNNING
+      if (Input.check(Key.LEFT))
+      {
+        velX = -RUN_SPEED;
+        sprite.flipped = true;
+      }
+      else if (Input.check(Key.RIGHT))
+      {
+        velX = RUN_SPEED;
+        sprite.flipped = false;
+      }
+      else if(!isSpinJumping)
+      {
+        velX = 0;
+      }
+
+      // JUMPING
+      if(onGround)
+      {
+        velY = 0;
+        isSpinJumping = false;
+        if(Input.pressed(Key.Z))
+        {
+          velY = -JUMP_POWER;
+          jumpSfx.play();
+          if((Input.check(Key.RIGHT) || Input.check(Key.LEFT)) && !Input.check(Key.UP))
+          {
+            isSpinJumping = true;
+          }
+        }
+      }
+      else
+      {
+        if(!isSpinJumping)
+        {
+          velX *= STANDING_JUMP_SPEED_PERCENTAGE;
+        }
+        velY += GRAVITY;
+        velY = Math.min(velY, TERMINAL_VELOCITY);
+        if(!Input.check(Key.Z) && velY < -JUMP_CANCEL_VELOCITY)
+        {
+          velY = -JUMP_CANCEL_VELOCITY;
+        }
+      }
+
+      // SHOOTING
+      if(Input.pressed(Key.X))
+      {
+        shootSfx.play();
+        if(isLookingUp)
+        {
+          if(sprite.flipped)
+          {
+            scene.add(new Bullet(x + 15, y + 11, 0, -BULLET_SPEED));
+          }
+          else
+          {
+            scene.add(new Bullet(x + 14, y + 11, 0, -BULLET_SPEED));
+          }
+        }
+        else
+        {
+          if(sprite.flipped)
+          {
+            scene.add(new Bullet(x + 7, y + 25, -BULLET_SPEED, 0));
+          }
+          else
+          {
+            scene.add(new Bullet(x + 26, y + 25, BULLET_SPEED, 0));
+          }
+        }
+
+      }
+    }
+
+    private function hit(damage:Int, enemy:Entity, hitFactor:Int)
+    {
+      if(invincibleTimer == 0)
+      {
+        invincibleTimer = INVINCIBLITY_DURATION;
+        health -= damage;
+        stunned = true;
+        if(x < enemy.x)
+        {
+          velX = -HIT_VEL_X*hitFactor;
+        }
+        else
+        {
+          velX = HIT_VEL_X*hitFactor;
+        }
+        velY = -HIT_VEL_Y*hitFactor;
+      }
+    }
+
     private function animate()
     {
-      if(!onGround)
+      if(invincibleTimer > INVINCIBLITY_DURATION/2)
+      {
+        sprite.play('hit');
+      }
+      else if(!onGround)
       {
         walkSfx.stop();
         if(isSpinJumping)
