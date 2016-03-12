@@ -25,6 +25,8 @@ class HUD extends Entity
       var player:Entity = scene.getInstance('player');
       x = player.centerX - text.textWidth/2;
       y = player.y - 5;
+      x = player.centerX - text.textWidth/2;
+      y = player.y - 5;
       text.richText = "<health>" + cast(player, Player).health + "</health>";
     }
 }

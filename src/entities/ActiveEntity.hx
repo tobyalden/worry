@@ -20,6 +20,15 @@ class ActiveEntity extends Entity
     velY = 0;
   }
 
+  public function damage(damage:Int)
+  {
+    health -= damage;
+    if(health <= 0)
+    {
+      scene.remove(this);
+    }
+  }
+
   private function unstuck()
   {
     while(collide('walls', x, y) != null)

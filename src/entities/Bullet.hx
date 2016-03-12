@@ -7,7 +7,7 @@ import com.haxepunk.Sfx;
 class Bullet extends Entity
 {
 
-    public static inline var BULLET_POWER = 1;
+    public static inline var BULLET_POWER = 10;
 
     private var velX:Float;
     private var velY:Float;
@@ -43,5 +43,11 @@ class Bullet extends Entity
     {
         super.update();
         moveBy(velX, velY, "walls");
+        var enemy = collide('enemy', x, y);
+        if(enemy != null)
+        {
+          cast(enemy, ActiveEntity).damage(BULLET_POWER);
+          scene.remove(this);
+        }
     }
 }

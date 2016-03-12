@@ -23,6 +23,10 @@ class Level extends TmxEntity
         {
           entities.push(new Hopper(entity.x, entity.y));
         }
+        if(entity.type == "pinkbrother")
+        {
+          entities.push(new PinkBrother(entity.x, entity.y));
+        }
       }
       name = "level";
   }
