@@ -86,6 +86,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		
 		
+		
 		#if (windows || mac || linux)
 		
 		var useManifest = false;
@@ -122,6 +123,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		className.set ("font/04B_03__.ttf.png", __ASSET__font_04b_03___ttf_png);
 		type.set ("font/04B_03__.ttf.png", AssetType.IMAGE);
+		useManifest = true;
 		useManifest = true;
 		useManifest = true;
 		useManifest = true;
@@ -655,6 +657,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		
 		
+		
 		#end
 		
 		#if flash
@@ -703,6 +706,8 @@ class DefaultAssetLibrary extends AssetLibrary {
 		type.set ("graphics/tiles.png", AssetType.IMAGE);
 		path.set ("audio/hit.wav", "audio/hit.wav");
 		type.set ("audio/hit.wav", AssetType.SOUND);
+		path.set ("audio/jetpack.wav", "audio/jetpack.wav");
+		type.set ("audio/jetpack.wav", AssetType.SOUND);
 		path.set ("audio/jump.wav", "audio/jump.wav");
 		type.set ("audio/jump.wav", AssetType.SOUND);
 		path.set ("audio/land.wav", "audio/land.wav");
@@ -797,6 +802,9 @@ class DefaultAssetLibrary extends AssetLibrary {
 		id = "audio/hit.wav";
 		path.set (id, id);
 		type.set (id, AssetType.SOUND);
+		id = "audio/jetpack.wav";
+		path.set (id, id);
+		type.set (id, AssetType.SOUND);
 		id = "audio/jump.wav";
 		path.set (id, id);
 		type.set (id, AssetType.SOUND);
@@ -865,6 +873,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 		
 		className.set ("font/04B_03__.ttf.png", __ASSET__font_04b_03___ttf_png);
 		type.set ("font/04B_03__.ttf.png", AssetType.IMAGE);
+		useManifest = true;
 		useManifest = true;
 		useManifest = true;
 		useManifest = true;
@@ -1630,6 +1639,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 
 
+
 #elseif html5
 
 
@@ -1642,6 +1652,7 @@ class DefaultAssetLibrary extends AssetLibrary {
 
 
 @:keep #if display private #end class __ASSET__font_04b_03___ttf extends lime.text.Font { public function new () { super (); name = "04b03"; } } 
+
 
 
 

@@ -60,6 +60,8 @@ class AssetData {
 			type.set ("graphics/tiles.png", Reflect.field (AssetType, "image".toUpperCase ()));
 			path.set ("audio/hit.wav", "audio/hit.wav");
 			type.set ("audio/hit.wav", Reflect.field (AssetType, "sound".toUpperCase ()));
+			path.set ("audio/jetpack.wav", "audio/jetpack.wav");
+			type.set ("audio/jetpack.wav", Reflect.field (AssetType, "sound".toUpperCase ()));
 			path.set ("audio/jump.wav", "audio/jump.wav");
 			type.set ("audio/jump.wav", Reflect.field (AssetType, "sound".toUpperCase ()));
 			path.set ("audio/land.wav", "audio/land.wav");

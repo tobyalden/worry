@@ -22,12 +22,18 @@ class Player extends ActiveEntity
     public static inline var STANDING_JUMP_SPEED_PERCENTAGE = 0.92;
     public static inline var BULLET_SPEED = 6;
 
+
     public static inline var GAME_START_X = 2874;
     public static inline var GAME_START_Y = 2160;
 
     public static inline var HIT_VEL_X = 4;
     public static inline var HIT_VEL_Y = 3;
     public static inline var INVINCIBLITY_DURATION = 50;
+
+    public static inline var JETPACK_POWER = 0.5;
+    public static inline var JETPACK_FUEL_CONSUMPTION = 4;
+    public static inline var JETPACK_FUEL_CONSUMPTION_FALLING = 2;
+    public static inline var MAX_JETPACK_FUEL= 100;
 
     public static inline var DEBUG = true;
 
@@ -40,9 +46,12 @@ class Player extends ActiveEntity
     private var spinJumpSfx:Sfx;
     private var landSfx:Sfx;
     private var shootSfx:Sfx;
+    private var jetpackSfx:Sfx;
 
     private var invincibleTimer:Int;
     private var stunned:Bool;
+    private var isHoldingJump:Bool;
+    private var jetpackFuel:Float;
 
     public function new()
     {
@@ -54,11 +63,13 @@ class Player extends ActiveEntity
         velX = 0;
         velY = 0;
         health = 100;
+        jetpackFuel = MAX_JETPACK_FUEL;
         onGround = false;
         isSpinJumping = false;
         isLookingUp = false;
         invincibleTimer = 0;
         stunned = false;
+        isHoldingJump = false;
         sprite = new Spritemap("graphics/player.png", GameScene.TILE_WIDTH, 48);
         sprite.add("idle", [0]);
         sprite.add("walk", [6, 7, 8], 12);
@@ -68,6 +79,7 @@ class Player extends ActiveEntity
         sprite.add("idle_up", [10], 12);
         sprite.add("walk_up", [11, 12, 13], 12);
         sprite.add("jump_up", [14]);
+        sprite.add("jetpack", [15]);
         sprite.flipped = Data.read('saveFacing', false);
         sprite.play("idle");
         graphic = sprite;
@@ -77,6 +89,7 @@ class Player extends ActiveEntity
         spinJumpSfx = new Sfx("audio/spinjump.wav");
         landSfx = new Sfx("audio/land.wav");
         shootSfx = new Sfx("audio/shoot.wav");
+        jetpackSfx = new Sfx("audio/jetpack.wav");
         name = "player";
     }
 
@@ -92,6 +105,7 @@ class Player extends ActiveEntity
         if(onGround != isOnGround())
         {
           onGround = isOnGround();
+          jetpackFuel = MAX_JETPACK_FUEL;
           landSfx.play();
         }
 
@@ -190,12 +204,19 @@ class Player extends ActiveEntity
       }
 
       // JUMPING
+
+      if(Input.released(Key.Z))
+      {
+        isHoldingJump = false;
+      }
       if(onGround)
       {
+        jetpackSfx.stop();
         velY = 0;
         isSpinJumping = false;
         if(Input.pressed(Key.Z))
         {
+          isHoldingJump = true;
           velY = -JUMP_POWER;
           jumpSfx.play();
           if((Input.check(Key.RIGHT) || Input.check(Key.LEFT)) && !Input.check(Key.UP))
@@ -206,12 +227,39 @@ class Player extends ActiveEntity
       }
       else
       {
+        if(Input.check(Key.Z) && !isHoldingJump && jetpackFuel > 0)
+        {
+          if(velY > 0)
+          {
+            jetpackFuel -= JETPACK_FUEL_CONSUMPTION_FALLING;
+          }
+          else
+          {
+            jetpackFuel -= JETPACK_FUEL_CONSUMPTION;
+          }
+          velY -= JETPACK_POWER;
+          if(!jetpackSfx.playing)
+          {
+            jetpackSfx.loop();
+          }
+          if(isSpinJumping)
+          {
+            isSpinJumping = false;
+            spinJumpSfx.stop();
+          }
+        }
+        else
+        {
+          jetpackSfx.stop();
+          jetpackFuel += 1;
+        }
         if(!isSpinJumping)
         {
           velX *= STANDING_JUMP_SPEED_PERCENTAGE;
         }
         velY += GRAVITY;
         velY = Math.min(velY, TERMINAL_VELOCITY);
+        velY = Math.max(velY, -TERMINAL_VELOCITY);
         if(!Input.check(Key.Z) && velY < -JUMP_CANCEL_VELOCITY)
         {
           velY = -JUMP_CANCEL_VELOCITY;
@@ -272,6 +320,10 @@ class Player extends ActiveEntity
       if(invincibleTimer > INVINCIBLITY_DURATION/2)
       {
         sprite.play('hit');
+      }
+      else if(jetpackSfx.playing)
+      {
+        sprite.play('jetpack');
       }
       else if(!onGround)
       {
