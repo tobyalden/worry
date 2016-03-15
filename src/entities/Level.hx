@@ -27,6 +27,10 @@ class Level extends TmxEntity
         {
           entities.push(new PinkBrother(entity.x, entity.y));
         }
+        if(entity.type == "brute")
+        {
+          entities.push(new Brute(entity.x, entity.y));
+        }
       }
       name = "level";
   }

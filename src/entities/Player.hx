@@ -80,6 +80,7 @@ class Player extends ActiveEntity
         sprite.add("walk_up", [11, 12, 13], 12);
         sprite.add("jump_up", [14]);
         sprite.add("jetpack", [15]);
+        sprite.add("jetpack_up", [16]);
         sprite.flipped = Data.read('saveFacing', false);
         sprite.play("idle");
         graphic = sprite;
@@ -323,7 +324,14 @@ class Player extends ActiveEntity
       }
       else if(jetpackSfx.playing)
       {
-        sprite.play('jetpack');
+        if(isLookingUp)
+        {
+          sprite.play('jetpack_up');
+        }
+        else
+        {
+          sprite.play('jetpack');
+        }
       }
       else if(!onGround)
       {
