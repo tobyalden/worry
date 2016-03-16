@@ -35,6 +35,8 @@ class Player extends ActiveEntity
     public static inline var JETPACK_FUEL_CONSUMPTION_FALLING = 2;
     public static inline var MAX_JETPACK_FUEL= 100;
 
+    public static inline var MOTHER_VISITATION_TIME= 100;
+
     public static inline var DEBUG = true;
 
     private var onGround:Bool;
@@ -53,6 +55,9 @@ class Player extends ActiveEntity
     private var isHoldingJump:Bool;
     private var jetpackFuel:Float;
 
+    private var lostInThought:Bool;
+    public var motherTimer:Float;
+
     public function new()
     {
         Data.load('worrysave');
@@ -70,6 +75,8 @@ class Player extends ActiveEntity
         invincibleTimer = 0;
         stunned = false;
         isHoldingJump = false;
+        lostInThought = false;
+        motherTimer = 0;
         sprite = new Spritemap("graphics/player.png", GameScene.TILE_WIDTH, 48);
         sprite.add("idle", [0]);
         sprite.add("walk", [6, 7, 8], 12);
@@ -81,6 +88,7 @@ class Player extends ActiveEntity
         sprite.add("jump_up", [14]);
         sprite.add("jetpack", [15]);
         sprite.add("jetpack_up", [16]);
+        sprite.add("lost_in_thought", [17]);
         sprite.flipped = Data.read('saveFacing', false);
         sprite.play("idle");
         graphic = sprite;
@@ -204,6 +212,31 @@ class Player extends ActiveEntity
         velX = 0;
       }
 
+      if(Input.check(Key.RIGHT) || Input.check(Key.LEFT) || !Input.check(Key.DOWN) || !onGround)
+      {
+        lostInThought = false;
+        if(motherTimer > 0)
+        {
+          motherTimer -= 1;
+        }
+        if(velX != 0 || velY != 0)
+        {
+          motherTimer = Math.max(0, motherTimer - 10);
+        }
+      }
+      else
+      {
+        lostInThought = true;
+        isSpinJumping = false;
+        spinJumpSfx.stop();
+        walkSfx.stop();
+        velX = 0;
+        if(motherTimer < MOTHER_VISITATION_TIME)
+        {
+          motherTimer += 1;
+        }
+      }
+
       // JUMPING
 
       if(Input.released(Key.Z))
@@ -268,7 +301,7 @@ class Player extends ActiveEntity
       }
 
       // SHOOTING
-      if(Input.pressed(Key.X))
+      if(Input.pressed(Key.X) && !lostInThought)
       {
         shootSfx.play();
         if(isLookingUp)
@@ -322,6 +355,10 @@ class Player extends ActiveEntity
       {
         sprite.play('hit');
       }
+      else if(lostInThought)
+      {
+        sprite.play('lost_in_thought');
+      }
       else if(jetpackSfx.playing)
       {
         if(isLookingUp)
@@ -346,6 +383,7 @@ class Player extends ActiveEntity
         }
         else
         {
+          spinJumpSfx.stop();
           if(isLookingUp)
           {
             sprite.play('jump_up');

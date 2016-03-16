@@ -10,6 +10,7 @@ class ActiveEntity extends Entity
   private var velY:Float;
 
   public var health:Int;
+  public var invincible:Bool;
 
   private var sprite:Spritemap;
 
@@ -18,14 +19,18 @@ class ActiveEntity extends Entity
     super(x, y);
     velX = 0;
     velY = 0;
+    invincible = false;
   }
 
   public function damage(damage:Int)
   {
-    health -= damage;
-    if(health <= 0)
+    if(!invincible)
     {
-      scene.remove(this);
+      health -= damage;
+      if(health <= 0)
+      {
+        scene.remove(this);
+      }
     }
   }
 

@@ -19,6 +19,7 @@ class GameScene extends Scene
     public override function begin()
     {
         add(new Player());
+        add(new Mother());
         var level = new Level(currentLevel);
         add(level);
         for(entity in level.entities)
@@ -26,7 +27,7 @@ class GameScene extends Scene
           add(entity);
           trace('Added ' + entity + " at " + entity.x + " " + entity.y);
         }
-        add(new HUD());
+        //add(new HUD());
     }
 
     public override function update()
