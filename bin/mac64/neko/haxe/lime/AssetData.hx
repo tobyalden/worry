@@ -44,12 +44,16 @@ class AssetData {
 			type.set ("graphics/brute.png", Reflect.field (AssetType, "image".toUpperCase ()));
 			path.set ("graphics/bubble.png", "graphics/bubble.png");
 			type.set ("graphics/bubble.png", Reflect.field (AssetType, "image".toUpperCase ()));
+			path.set ("graphics/dragon.png", "graphics/dragon.png");
+			type.set ("graphics/dragon.png", Reflect.field (AssetType, "image".toUpperCase ()));
 			path.set ("graphics/enemies.png", "graphics/enemies.png");
 			type.set ("graphics/enemies.png", Reflect.field (AssetType, "image".toUpperCase ()));
 			path.set ("graphics/green_brother.png", "graphics/green_brother.png");
 			type.set ("graphics/green_brother.png", Reflect.field (AssetType, "image".toUpperCase ()));
 			path.set ("graphics/hopper.png", "graphics/hopper.png");
 			type.set ("graphics/hopper.png", Reflect.field (AssetType, "image".toUpperCase ()));
+			path.set ("graphics/lust_demon.png", "graphics/lust_demon.png");
+			type.set ("graphics/lust_demon.png", Reflect.field (AssetType, "image".toUpperCase ()));
 			path.set ("graphics/mother.png", "graphics/mother.png");
 			type.set ("graphics/mother.png", Reflect.field (AssetType, "image".toUpperCase ()));
 			path.set ("graphics/old_player.png", "graphics/old_player.png");
