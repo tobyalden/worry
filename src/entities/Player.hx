@@ -58,6 +58,8 @@ class Player extends ActiveEntity
     private var lostInThought:Bool;
     public var motherTimer:Float;
 
+    public var powerUps:Map<String,Bool>;
+
     public function new()
     {
         Data.load('worrysave');
@@ -77,6 +79,7 @@ class Player extends ActiveEntity
         isHoldingJump = false;
         lostInThought = false;
         motherTimer = 0;
+        powerUps = new Map();
         sprite = new Spritemap("graphics/player.png", GameScene.TILE_WIDTH, 48);
         sprite.add("idle", [0]);
         sprite.add("walk", [6, 7, 8], 12);

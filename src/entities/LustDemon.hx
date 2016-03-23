@@ -15,6 +15,10 @@ class LustDemon extends ActiveEntity
 
     private var chasing:Bool;
 
+    public static inline var BOB_SPEED = 0.025;
+
+    private var bob:Float;
+
     public function new(x:Float, y:Float)
     {
         super(x, y-64);
@@ -24,7 +28,8 @@ class LustDemon extends ActiveEntity
         sprite.add("idle", [0, 1, 2, 3, 4], 10);
         sprite.play("idle");
         graphic = sprite;
-        health = 1000;
+        health = 600;
+        bob = 0;
         type = "enemy";
     }
 
@@ -32,6 +37,12 @@ class LustDemon extends ActiveEntity
     {
         super.update();
         var player:Entity = scene.getInstance('player');
+
+        bob += BOB_SPEED;
+        if(bob > Math.PI*2)
+        {
+          bob -= Math.PI*2;
+        }
 
         if(chasing || distanceFrom(player) < ACTIVE_RANGE)
         {
@@ -45,24 +56,9 @@ class LustDemon extends ActiveEntity
             velX -= SPEED;
             sprite.flipped = true;
           }
-          if(y < player.y)
-          {
-            velY += SPEED;
-            sprite.flipped = false;
-          }
-          else
-          {
-            velY -= SPEED;
-          }
 
-          if(velX > MAX_VELOCITY)
-          {
-            velX = MAX_VELOCITY;
-          }
-          if(velY > MAX_VELOCITY)
-          {
-            velY = MAX_VELOCITY;
-          }
+          y += Math.sin(bob) * 2;
+
         }
 
         moveBy(velX, velY, "none");

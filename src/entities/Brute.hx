@@ -26,7 +26,7 @@ class Brute extends ActiveEntity
         sprite.add("jump", [1, 2, 3], 12);
         sprite.play("idle");
         graphic = sprite;
-        health = 1000;
+        health = 400;
         type = "enemy";
     }
 

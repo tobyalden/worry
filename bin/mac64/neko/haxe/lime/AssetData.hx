@@ -48,6 +48,8 @@ class AssetData {
 			type.set ("graphics/dragon.png", Reflect.field (AssetType, "image".toUpperCase ()));
 			path.set ("graphics/enemies.png", "graphics/enemies.png");
 			type.set ("graphics/enemies.png", Reflect.field (AssetType, "image".toUpperCase ()));
+			path.set ("graphics/fire.png", "graphics/fire.png");
+			type.set ("graphics/fire.png", Reflect.field (AssetType, "image".toUpperCase ()));
 			path.set ("graphics/green_brother.png", "graphics/green_brother.png");
 			type.set ("graphics/green_brother.png", Reflect.field (AssetType, "image".toUpperCase ()));
 			path.set ("graphics/hopper.png", "graphics/hopper.png");
@@ -64,6 +66,8 @@ class AssetData {
 			type.set ("graphics/pink_brother.png", Reflect.field (AssetType, "image".toUpperCase ()));
 			path.set ("graphics/player.png", "graphics/player.png");
 			type.set ("graphics/player.png", Reflect.field (AssetType, "image".toUpperCase ()));
+			path.set ("graphics/powerups.png", "graphics/powerups.png");
+			type.set ("graphics/powerups.png", Reflect.field (AssetType, "image".toUpperCase ()));
 			path.set ("graphics/tiles.png", "graphics/tiles.png");
 			type.set ("graphics/tiles.png", Reflect.field (AssetType, "image".toUpperCase ()));
 			path.set ("audio/hit.wav", "audio/hit.wav");

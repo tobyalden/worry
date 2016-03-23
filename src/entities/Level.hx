@@ -35,6 +35,14 @@ class Level extends TmxEntity
         {
           entities.push(new LustDemon(entity.x, entity.y));
         }
+        if(entity.type == "fire")
+        {
+          entities.push(new Fire(entity.x, entity.y));
+        }
+        if(entity.type == "powerup")
+        {
+          entities.push(new PowerUp(entity.x, entity.y));
+        }
       }
       name = "level";
   }
