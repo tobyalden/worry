@@ -21,7 +21,7 @@
 	<key>CFBundleSignature</key>
 	<string>haxe</string>
 	<key>CFBundleVersion</key>
-	<string>1034</string>
+	<string>1036</string>
 	<key>NSAppleScriptEnabled</key>
 	<string>NO</string>
 	<key>LSApplicationCategoryType</key>
