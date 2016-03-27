@@ -43,6 +43,10 @@ class Level extends TmxEntity
         {
           entities.push(new PowerUp(entity.x, entity.y));
         }
+        if(entity.type == "lawnmower")
+        {
+          entities.push(new LawnMower(entity.x, entity.y));
+        }
       }
       name = "level";
   }
